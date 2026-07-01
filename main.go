@@ -9,9 +9,7 @@ import (
 	"strconv"
 )
 
-// ─────────────────────────────────────────────────────────────
 // CONVERSION LOGIC
-// ─────────────────────────────────────────────────────────────
 
 func convertLength(value float64, from, to string) float64 {
 	toMeters := map[string]float64{
@@ -66,9 +64,7 @@ func round(value float64) string {
 	return strconv.FormatFloat(rounded, 'f', -1, 64)
 }
 
-// ─────────────────────────────────────────────────────────────
 // TEMPLATE DATA
-// ─────────────────────────────────────────────────────────────
 
 type PageData struct {
 	Page      string
@@ -80,9 +76,7 @@ type PageData struct {
 	Error     string
 }
 
-// ─────────────────────────────────────────────────────────────
 // TEMPLATES
-// ─────────────────────────────────────────────────────────────
 
 var layoutTmpl = template.Must(template.New("layout").Parse(`<!DOCTYPE html>
 <html lang="en">
@@ -245,9 +239,7 @@ var temperatureTmpl = template.Must(template.New("temperature").Parse(`
   {{if .Error}}<div class="error">{{.Error}}</div>{{end}}
 </div>`))
 
-// ─────────────────────────────────────────────────────────────
 // RENDER HELPER
-// ─────────────────────────────────────────────────────────────
 
 func render(w http.ResponseWriter, page string, bodyTmpl *template.Template, data PageData) {
 	// Render the inner body first into a buffer
@@ -260,9 +252,7 @@ func render(w http.ResponseWriter, page string, bodyTmpl *template.Template, dat
 	layoutTmpl.Execute(w, data)
 }
 
-// ─────────────────────────────────────────────────────────────
 // HANDLERS
-// ─────────────────────────────────────────────────────────────
 
 func handleLength(w http.ResponseWriter, r *http.Request) {
 	data := PageData{FromUnit: "meter", ToUnit: "kilometer"}
@@ -332,10 +322,6 @@ func handleTemperature(w http.ResponseWriter, r *http.Request) {
 
 	render(w, "temperature", temperatureTmpl, data)
 }
-
-// ─────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
